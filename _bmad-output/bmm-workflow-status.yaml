@@ -133,3 +133,6 @@ automation_events:
   - timestamp: '2026-02-03T19:04:44.361Z'
     event: commit_made
     message: 'chore: update to readme with imagemagick instructions'
+  - timestamp: '2026-02-24T15:35:50.030Z'
+    event: commit_made
+    message: 'chore: updating dependency and setup.sh config for node version compatibility with next 16'
