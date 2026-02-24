@@ -204,7 +204,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   check_optional_tools
   setup_github_auth
 else
-  warn "Non-macOS system detected. Please ensure git, gh, and node 18+ are installed manually."
+  warn "Non-macOS system detected. Please ensure git, gh, and node 20.9+ are installed manually."
   setup_github_auth
 fi
 
@@ -234,35 +234,48 @@ function install_node_via_nvm() {
   install_nvm_if_needed
 
   if [ -s "$HOME/.nvm/nvm.sh" ]; then
-    log "NVM detected. Installing Node.js 18..."
+    log "NVM detected. Installing Node.js 20..."
     source "$HOME/.nvm/nvm.sh"
-    retry_command "nvm install 18" "Node.js 18 installation via nvm"
-    retry_command "nvm use 18" "Switching to Node.js 18"
-    retry_command "nvm alias default 18" "Setting Node.js 18 as default"
+    retry_command "nvm install 20" "Node.js 20 installation via nvm"
+    retry_command "nvm use 20" "Switching to Node.js 20"
+    retry_command "nvm alias default 20" "Setting Node.js 20 as default"
     return 0
   elif command -v nvm &> /dev/null; then
-    log "NVM command available. Installing Node.js 18..."
-    retry_command "nvm install 18" "Node.js 18 installation via nvm"
-    retry_command "nvm use 18" "Switching to Node.js 18"
-    retry_command "nvm alias default 18" "Setting Node.js 18 as default"
+    log "NVM command available. Installing Node.js 20..."
+    retry_command "nvm install 20" "Node.js 20 installation via nvm"
+    retry_command "nvm use 20" "Switching to Node.js 20"
+    retry_command "nvm alias default 20" "Setting Node.js 20 as default"
     return 0
   fi
+  return 1
+}
+
+# Returns 0 if node version string (e.g. 20.9.0) meets Next.js requirement >=20.9.0
+function node_version_ok() {
+  local v="$1"
+  local major minor
+  major=$(echo "$v" | cut -d. -f1)
+  minor=$(echo "$v" | cut -d. -f2)
+  [ -z "$major" ] && return 1
+  [ "$major" -gt 20 ] 2>/dev/null && return 0
+  [ "$major" -eq 20 ] 2>/dev/null && [ -n "$minor" ] && [ "$minor" -ge 9 ] 2>/dev/null && return 0
   return 1
 }
 
 function check_node_version() {
   if command -v node &> /dev/null; then
     NODE_VERSION=$(node --version | sed 's/v//')
-    MAJOR_VERSION=$(echo $NODE_VERSION | cut -d. -f1)
+    MAJOR_VERSION=$(echo "$NODE_VERSION" | cut -d. -f1)
     log "Found Node.js version $NODE_VERSION"
   else
     log "Node.js not found, will attempt installation..."
+    NODE_VERSION="0.0.0"
     MAJOR_VERSION=0
   fi
 
-  if [ "$MAJOR_VERSION" -lt 18 ]; then
+  if ! node_version_ok "$NODE_VERSION"; then
     if [ "$MAJOR_VERSION" -gt 0 ]; then
-      warn "Node.js version $NODE_VERSION detected. This project requires Node.js 18+."
+      warn "Node.js version $NODE_VERSION detected. This project requires Node.js >=20.9.0 (Next.js)."
     fi
 
     # Try different installation methods in order of preference
@@ -270,15 +283,15 @@ function check_node_version() {
       log "Upgrading Node.js via Homebrew..."
       retry_command "brew upgrade node" "Node.js upgrade"
     elif install_node_via_nvm; then
-      log "Node.js 18 installed via nvm"
+      log "Node.js 20 installed via nvm"
     elif command -v brew &> /dev/null; then
-      log "Installing Node.js 18 via Homebrew..."
+      log "Installing Node.js 20 via Homebrew..."
       retry_command "brew install node" "Node.js installation"
     else
       error "Cannot install Node.js automatically. Please install manually:"
       error "  1. Install Homebrew: /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
       error "  2. Install Node.js: brew install node"
-      error "  3. Or install nvm and run: nvm install 18 && nvm use 18"
+      error "  3. Or install nvm and run: nvm install 20 && nvm use 20"
       error "  4. Or download from https://nodejs.org/"
       return 1
     fi
@@ -286,9 +299,8 @@ function check_node_version() {
     # Verify installation worked
     if command -v node &> /dev/null; then
       NEW_NODE_VERSION=$(node --version | sed 's/v//')
-      NEW_MAJOR_VERSION=$(echo $NEW_NODE_VERSION | cut -d. -f1)
-      if [ "$NEW_MAJOR_VERSION" -lt 18 ]; then
-        error "Node.js installation/upgrade failed. Version is still $NEW_NODE_VERSION (need 18+)"
+      if ! node_version_ok "$NEW_NODE_VERSION"; then
+        error "Node.js installation/upgrade failed. Version is still $NEW_NODE_VERSION (need >=20.9.0)"
         return 1
       fi
       log "Node.js version $NEW_NODE_VERSION is now available"
@@ -297,7 +309,7 @@ function check_node_version() {
       return 1
     fi
   else
-    log "Node.js version $NODE_VERSION is compatible (18+ required)"
+    log "Node.js version $NODE_VERSION is compatible (>=20.9.0 required for Next.js)"
   fi
 }
 

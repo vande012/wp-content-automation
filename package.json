@@ -105,7 +105,7 @@
   "author": "Content Automation Team",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.9.0"
   },
   "directories": {
     "doc": "docs",
