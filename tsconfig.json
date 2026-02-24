@@ -32,7 +32,14 @@
       "@/lib/*": [
         "./src/lib/*"
       ]
-    }
+    },
+    "types": [
+      "node",
+      "react",
+      "react-dom",
+      "jest",
+      "next"
+    ]
   },
   "include": [
     "next-env.d.ts",
