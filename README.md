@@ -72,7 +72,7 @@ bash setup.sh
 ```
 
 That's it. The setup script handles everything:
-- Installs Homebrew, Node.js, and dependencies
+- Installs Homebrew, Node.js (20.9+ required for Next.js), and dependencies
 - Generates Prisma client and installs Playwright browsers
 - Creates `.env` with database credentials (fetched automatically or prompted)
 - Configures shell PATH and aliases

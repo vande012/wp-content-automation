@@ -4,7 +4,7 @@
 
 | Technology | Purpose | Key Dependency |
 |------------|---------|----------------|
-| **Runtime** | Execution Environment | Node.js >= 18.0.0 |
+| **Runtime** | Execution Environment | Node.js >= 20.9.0 |
 ### 1. Frontend & UI
 - **Next.js 16**: Modern React framework for the management dashboard.
 - **React 19**: Latest React features for interactive components.

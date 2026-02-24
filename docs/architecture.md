@@ -139,7 +139,7 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 
 **Hard Constraints:**
 
-1. **Node.js >= 18.0.0**: Required runtime for ES6 modules (`"type": "module"`)
+1. **Node.js >= 20.9.0**: Required runtime for ES6 modules and Next.js (`"type": "module"`)
 2. **Playwright Browser Binaries**: Chromium headless browser essential for Cloudflare bypass
 3. **Supabase Account**: Managed PostgreSQL + Auth provider (external dependency)
 4. **Redis Instance**: Required for BullMQ job queue (local or managed)
@@ -237,7 +237,7 @@ The project evolved through these phases:
 ### Architectural Decisions Provided by Existing Stack
 
 **Language & Runtime:**
-- **Node.js >= 18.0.0**: Required for ES6 modules (`"type": "module"`)
+- **Node.js >= 20.9.0**: Required for ES6 modules and Next.js (`"type": "module"`)
 - **JavaScript (ES2020+)**: Primary language for all services
 - **TypeScript**: Type definitions available (`@types/node`) but not enforced
 - **Module System**: Pure ES6 modules, no CommonJS

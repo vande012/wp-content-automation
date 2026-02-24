@@ -12,7 +12,7 @@ This document provides critical implementation rules and architectural context o
 
 ## 🛠 Technology Stack (Verified)
 
-- **Runtime**: Node.js >= 18.0.0 (ECMAScript Modules)
+- **Runtime**: Node.js >= 20.9.0 (ECMAScript Modules; Next.js requirement)
 - **Scraping**: Playwright ^1.40.0 (Chromium)
 - **DOM Engine**: JSDOM ^23.2.0 (for complex cleaning), Cheerio ^1.0.0-rc.12 (for lightweight extraction)
 - **Utilities**: fs-extra ^11.1.1, p-queue ^7.4.1, winston ^3.11.0

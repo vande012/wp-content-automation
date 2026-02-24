@@ -1,7 +1,7 @@
 # Development Guide
 
 ## Prerequisites
-- **Node.js**: Version >= 18.0.0
+- **Node.js**: Version >= 20.9.0 (required for Next.js)
 - **Package Manager**: npm or yarn
 - **Browsers**: Playwright browser binaries
 
